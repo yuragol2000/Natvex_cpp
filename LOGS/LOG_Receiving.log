@@ -1,0 +1,42 @@
+LOAD Config FILE /home/yurock/Workspace/NAVTEX/CONF/navtex_receiving.conf
+
+
+ClASS Created
+filename_in - /home/yurock/Workspace/NAVTEX/TEST/Modulated.txt
+filename_out - /home/yurock/Workspace/NAVTEX/TEST/Received.txt
+Rec 
+Reading 
+Reading pos = 0
+Modulation.modulated_buf size = 1256640
+Demodulator 
+Demodulation.demodulated_buf size = 2618
+Decoder 
+Receiving.received_text size = 101
+Rec 
+Reading 
+End of file 
+Rec 
+Reading 
+End of file 
+Rec 
+Reading 
+Reading pos = 0
+Modulation.modulated_buf size = 1256640
+Demodulator 
+Demodulation.demodulated_buf size = 2618
+Decoder 
+Receiving.received_text size = 101
+Rec 
+Reading 
+Reading pos = 0
+Modulation.modulated_buf size = 1256640
+Demodulator 
+Demodulation.demodulated_buf size = 2618
+Decoder 
+Receiving.received_text size = 101
+Rec 
+Reading 
+End of file 
+Rec 
+Reading 
+End of file 

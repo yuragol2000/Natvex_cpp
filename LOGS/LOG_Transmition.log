@@ -1,0 +1,18 @@
+LOAD Config FILE /home/yurock/Workspace/NAVTEX/CONF/navtex_transmition.conf
+
+
+ClASS Created
+filename_in - /home/yurock/Workspace/NAVTEX/TEST/text_copy.txt
+filename_out - /home/yurock/Workspace/NAVTEX/TEST/Modulated.txt
+Read
+Reading position = 0
+Coder 
+Coding.codered_buffer_1 size = 2618
+Modulator 
+Modulator.modulated_buffer_1 size = 1256640
+Modulator 
+Modulator.modulated_buffer_1 size = 1256640
+Modulator 
+Modulator.modulated_buffer_1 size = 1256640
+Modulator 
+Modulator.modulated_buffer_1 size = 1256640
