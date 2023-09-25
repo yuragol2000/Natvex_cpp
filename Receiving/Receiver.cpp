@@ -93,7 +93,6 @@ int Receiver::Read_from_file(){
 
             return 0;
         }
-
         else
         {
             Log("End of file \n");
@@ -111,21 +110,15 @@ int Receiver::Read_from_file(){
 
     }
 
- 
-
-   
-
-
 }
-
 void Receiver::_Decoder(){
     
     Log("Decoder \n");
     Receiving.received_text = Decoder(Demodulation.demodulated_buf);
-    std::cout << Receiving.received_text << std::endl;
     Log("Receiving.received_text size = " + std::to_string(Receiving.received_text.size()) + '\n');
     Write_text_to_file(Settings.OUTPUT_TEXT_FILE,Receiving.received_text);
 }
+
 void Receiver::Demodulator(){
     Log("Demodulator \n");
     Demodulation.demodulated_buf = IncoherentReception(Modulation.modulated_buf);

@@ -1,7 +1,7 @@
 #include "IncoherentReception.h"
 
 
-std::vector<bool> IncoherentReception(const std::vector<short> modulated){
+std::vector<bool> Receiver::IncoherentReception(const std::vector<short> modulated){
 
     std::vector<double> binarycode_double;
     double temp = 0;
@@ -11,8 +11,6 @@ std::vector<bool> IncoherentReception(const std::vector<short> modulated){
         temp = static_cast<double>(modulated[i]);
         binarycode_double.push_back(temp/32767);
     }
-    
-    
 
     std::vector<double> filtered_high = Filtfilt(bh,ah,binarycode_double);
     std::vector<double> filtered_low   = Filtfilt(bl,al,binarycode_double);
@@ -55,7 +53,7 @@ std::vector<bool> IncoherentReception(const std::vector<short> modulated){
             demodulated.push_back(false);
         }
         else{
-            std::cout << "ERROR" << std::endl;
+            Log("ERROR with IncoherentReception\n");
         }
         
     }

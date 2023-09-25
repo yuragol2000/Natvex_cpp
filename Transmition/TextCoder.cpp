@@ -178,7 +178,7 @@ std::vector<bool> TextCoder(const char* input_text){
                     arr = {0,1,0,0,1,0,1};
                     break;
                 case '-':
-                    arr = {0,0,1,0,1,0,1};
+                    arr = {0,0,0,1,1,1,0};
                     break;
                 case ' ':
                     arr = {1,1,0,0,0,1,0};

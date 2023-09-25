@@ -7,29 +7,24 @@
 
 #include "transmitter.h"
 
-char* input = new char[100]();
-
-std::mutex m;
-std::condition_variable cv;
 bool _var  = false;//индикатор передачи false - нет true - есть 
-bool ret() {return _var;};
 
 void Coder_thread(Transmitter& _obj)
 {
     
-    std::unique_lock<std::mutex> ulm (m);
+    _var = true;
     while (true)
     {
-        //_var = true;
-        //cv.notify_one();
-        //cv.wait(ulm);
 
+        if (_obj.Trans() != 0)
+        {
+            _var = false;
+            break;
+        }
 
         usleep(800000);
         
     }
-    
-       
 }
 
 
@@ -38,15 +33,14 @@ void Modulation_thread(Transmitter& _obj){
     _obj.Log("Modulating " + _obj.Settings.OUTPUT_TEXT_FILE + '\n');
     while (true)
     {
+
         if (_var == false)
         {
-            if (!_obj.Write_text_to_file(_obj.Settings.OUTPUT_TEXT_FILE,"LOL\n"));
-                break;
+            _obj.Alpha();
         }
         else
         {
-            if (!_obj.Write_text_to_file(_obj.Settings.OUTPUT_TEXT_FILE,"1\n"));
-                break;
+            
         }
         
         usleep(800000);
@@ -74,33 +68,24 @@ void Transmition(){
     
     Transmitter tr;
 
-    //std::thread t1 (Read,std::ref(tr));
-    //std::thread t2 (Coder_thread,std::ref(tr));
+    std::thread t1 (Modulation_thread,std::ref(tr));
 
-    
-    
-    std::thread t2 (Modulation_thread,std::ref(tr));
-   // std::thread t1 (Modulation_thread,std::ref(tr));
-
-    //Read(std::ref(tr));
-    // std::thread t2 (foo,tr);
-    
-    //t2.join();
     std::string command;
+
     while (true)
     {
         std::cout  << "CONSOLE" << std::endl << "INPUT: ";
         std::cin >> command;
-
+        std::system("clear");
+        
         if (command == "stop")
         {
-           // t2.detach();
-            //t3.detach();
+            t1.detach();
             break;
         }
         else if (command == "stop_1")
         {
-            //t1.detach();
+            t1.detach();
         }
         else if (command == "read")
         {
@@ -114,13 +99,18 @@ void Transmition(){
         {
             tr.Write_text();
         }
+        else if (command == "tr")
+        {
+            std::thread t2 (Coder_thread,std::ref(tr));
+            t2.join();
+        }
+        else if (command == "a")
+        {
+            tr.Alpha();
+        }
         else if (command == "mod")
         {
             tr.Modulator();
-        }
-        else if (command == "bin")
-        {
-            tr.Write_bin();
         }
         else
         {
@@ -128,28 +118,12 @@ void Transmition(){
         } 
         usleep(500000);
     }
-
-    //const std::vector<bool> binarycode = Coder(readen_text, type_of_coder);
-    
-    //const std::vector<double> s_fsk = Modulation(binarycode);
-
-    //Writing(filename_out,s_fsk);
 }
 
 
 int main(){
 
-
-    //std::thread t0(Transmition);
-
-    //t0.join();
     Transmition();
-
-    //clock_t tStart = clock();
-
-    //int z = Receiver(filename_in2,filename_out2);
-
-    //printf("Time taken: %.2fs\n", (double)(clock() - tStart)/CLOCKS_PER_SEC);  
 
     return 0;
 }

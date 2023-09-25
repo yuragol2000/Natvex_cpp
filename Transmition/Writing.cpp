@@ -1,35 +1,47 @@
-#include "Writing.h"
+#include "Transmitter.h"
 
-int Writing(const std::string filename_out,const std::vector<double> s_fsk){
-    
-    std::vector<short> s_fsk_short;
+int Transmitter::Writing(std::vector<double> s_fsk){
 
-    for (size_t i = 0; i < s_fsk.size(); i++){
 
-        double temp = 0;
-        
+    std::ofstream out;   
+    out.open(Settings.OUTPUT_TEXT_FILE,std::ios::app);  
 
-        if (s_fsk[i] >= 0){
+    if (out.is_open())
+    {
+        std::vector<short> s_fsk_short;
+
+        for (size_t i = 0; i < s_fsk.size(); i++){
+
+            double temp = 0;
             
-            temp = s_fsk[i]*32767;
+
+            if (s_fsk[i] >= 0){
+                
+                temp = s_fsk[i]*32767;
+            }
+            else
+                temp = s_fsk[i]*32768;
+            
+            
+            s_fsk_short.push_back(temp);
+        
+            
         }
-        else
-            temp = s_fsk[i]*32768;
-        
-        
-        s_fsk_short.push_back(temp);
-        
 
-    }
+        for (size_t i = 0; i < s_fsk_short.size(); i++){
 
-    std::ofstream stream(filename_out); 
-
-    for (size_t i = 0; i < s_fsk_short.size(); i++){
-
-       stream << s_fsk_short[i] <<" ";
-    }
+            out << s_fsk_short[i] <<" ";
+            
+        }
+        out.close();
+    }  
+    else
+    {
+        Log("Can't open output file \n");
+        out.close();
+        return -1;
+    }  
     
-    stream.close(); // ��������� ����
-
     return 0;
+
 }

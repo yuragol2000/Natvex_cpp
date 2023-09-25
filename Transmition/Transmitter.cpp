@@ -5,7 +5,7 @@ Transmitter::Transmitter(){
 
     LoadConf(Settings.CONFIG_FILE);    
     Log("\n\nClASS Created\n");
-
+ 
 
     Reading.text_buffer_1 = new char[Settings.LEN_OF_READING_BUFFER]();
     Reading.text_buffer_2 = new char[Settings.LEN_OF_READING_BUFFER]();
@@ -13,6 +13,9 @@ Transmitter::Transmitter(){
 
     Log("filename_in - " + Settings.IMPUT_TEXT_FILE + "\n");
     Log("filename_out - " + Settings.OUTPUT_TEXT_FILE + "\n");
+    Log("--------------------------------------------------------\n\n");
+
+    Alpha_init();
 }
 
 Transmitter::Transmitter(const std::string configure_file)
@@ -71,47 +74,12 @@ Transmitter::~Transmitter()
     Log("CLASS Destracted\n");
 }
 
-int Transmitter::Read_from_file(std::string FileName){
-    
-    std::fstream in;
-    in.open(Settings.IMPUT_TEXT_FILE,std::ios::in);
-    Log("Read\n");
 
-    if (in.is_open())
-    {
-                   
-        in.seekg(Reading.reading_position);
-
-        if (in.peek() != std::ifstream::traits_type::eof())
-        {
-            
-            in.seekg(Reading.reading_position);
-
-            Log("Reading position = " + std::to_string(Reading.reading_position) + '\n' );
-            in.read(Reading.text_buffer_1,Settings.LEN_OF_READING_BUFFER);
-            Reading.num_to_print += in.gcount();
-            Reading.reading_position = Reading.reading_position + in.gcount(); 
-        } 
-        else{
-            Log("End of file\n");
-            Log("Length of input file = " + std::to_string(Reading.num_to_print) + '\n' );
-        }
-    }
-    else
-    {
-        Log("Can't open input file \n");
-        in.close();
-        return 1;
-    }
-
-    in.close();
-    return 0;
-
-}
 void Transmitter::_Coder(){
     
     Log("Coder \n");
     Coding.codered_buffer_1 = Coder(Reading.text_buffer_1,Settings.TYPE_OF_CODER);
+    
     for (size_t i = 0; i < Settings.LEN_OF_READING_BUFFER; i++)
     {
         Reading.text_buffer_1[i] = '\0';
@@ -121,35 +89,46 @@ void Transmitter::_Coder(){
 
 }
 
+int Transmitter::Alpha_init(){
+    Log("ALPHA init \n");
+    Modulating.modulated_buffer_alpha = Modulation(Coding.codered_buffer_alpha);
+    Log("Modulator.modulated_buffer_alpha size = " + std::to_string(Modulating.modulated_buffer_alpha.size()) + '\n');
+    
+}
+
+
+
+int Transmitter::Alpha(){
+    Log("ALPHA \n");
+    Writing(Modulating.modulated_buffer_alpha);
+
+}
+
 int Transmitter::Trans(){
-    Read_from_file(Settings.IMPUT_TEXT_FILE);
+    Log("\n");
+    int read_ = Read_from_file(Settings.IMPUT_TEXT_FILE);
+    if (read_ == 0)
+    {
+
+    }
+    else if (read_ == 2)
+    {
+        Reading.start_reading = true;
+        return 2;
+    }
+    else if (read_ == -1)
+    {
+        Log("ERROR\n");
+        return -1;
+    }
     _Coder();
     Modulator();
+    return 0;
 }
 void Transmitter::Modulator(){
     Log("Modulator \n");
     Modulating.modulated_buffer_1 = Modulation(Coding.codered_buffer_1);
      Log("Modulator.modulated_buffer_1 size = " + std::to_string(Modulating.modulated_buffer_1.size()) + '\n');
-    Writing(Settings.OUTPUT_TEXT_FILE,Modulating.modulated_buffer_1);
+    Writing(Modulating.modulated_buffer_1);
 
-}
-int Transmitter::Write_text_to_file(const std::string FileName ,const std::string Messege){
-
-    std::ofstream out;   
-    out.open(FileName,std::ios::app);  
-    if (out.is_open())
-    {
-
-        
-        out << Messege;
-    }  
-    else
-    {
-        Log("Can't open output file \n");
-        out.close();
-        return 1;
-    }  
-    out.close();
-
-    return 0;
 }

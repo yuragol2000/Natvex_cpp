@@ -8,8 +8,6 @@
 
 
 #include "INIReader.h"
-#include "IncoherentReception.h"
-#include "Decoder.h"
 
 struct threads_control
 {
@@ -35,7 +33,7 @@ struct settings
 {
     std::string IMPUT_TEXT_FILE;
     std::string OUTPUT_TEXT_FILE;
-    std::string CONFIG_FILE = "/home/yurock/Workspace/NAVTEX/CONF/navtex_receiving.conf";
+    std::string CONFIG_FILE = "CONF/navtex_receiving.conf";
     std::string LOG_FILE;
     
     bool TYPE_OF_CODER = 0;
@@ -62,7 +60,17 @@ public:
     void Demodulator();
 
     void Log(const std::string);
-    
+
+    std::string Decoder(std::vector<bool>);
+    int Phasing(const std::vector<bool> );
+
+    std::string Text_Decoder(const std::vector<int> DX , const std::vector<int> RX);
+    std::vector<bool> IncoherentReception(const std::vector<short> );
+    std::string Compare(std::string DX, std::string RX);
+    bool AlphaCheck(const std::vector<bool> demodulated);
+
+    std::tuple<std::vector<int>,std::vector<int>> Simb_Decoder(const std::vector<bool> demodulated);
+
     void Write_text();
     int Write_text_to_file(const std::string,const std::string);
     void Write_bin();

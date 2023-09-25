@@ -1,15 +1,16 @@
 #include "Phasing.h"
 
-int Phasing(const std::vector<bool> demodulated)
+int Receiver::Phasing(const std::vector<bool> demodulated)
 {
     int start_pos = 0;       //1 = DX  0 = RX , sign "-"  if need to invert 
     unsigned int offset = 0; // offset to corect
 
 
+
     int len_of_phasing = demodulated.size();
     if (len_of_phasing < 6*7)
     {
-        std::cout  << "Too few bits to phasing" << std::endl;
+        Log("Too few bits to phasing\n");
         return -5;
     }
     
@@ -30,7 +31,7 @@ int Phasing(const std::vector<bool> demodulated)
 
             if (len_of_phasing-i < 5*7)
             {
-                std::cout  << "Too few bits to phasing or resieving ERROR" << std::endl;
+                Log("Too few bits to phasing or receving ERROR\n");
                 return -5;
             }
             for (int j = 0; j < 7; j++)
@@ -41,7 +42,7 @@ int Phasing(const std::vector<bool> demodulated)
                 temp_CB_2 +=  (demodulated[j+i+28] == PhasingSign_CB_2[j]);          
                 temp_CB_2 +=  (demodulated[j+i+35] == PhasingSign_CB_1[j]);          
             }     
-            std::cout << "i = " << i << " CB_2 = " << temp_CB_2 << std::endl;
+
             if (temp_CB_2 == 7*6)
             {
                 start_pos = 1;
@@ -54,7 +55,7 @@ int Phasing(const std::vector<bool> demodulated)
         {
             if (len_of_phasing-i < 5*7)
             {
-                std::cout  << "Too few bits to phasing or resieving ERROR" << std::endl;
+                Log("Too few bits to phasing or receving ERROR\n");
                 return -5;
             }
             for (int j = 0; j < 7; j++)
@@ -63,7 +64,7 @@ int Phasing(const std::vector<bool> demodulated)
                 temp_SB_2 +=  (demodulated[j+i+14] == PhasingSign_SB_2[j]);        
                 temp_SB_2 +=  (demodulated[j+i+21] == PhasingSign_SB_1[j]);          
                 temp_SB_2 +=  (demodulated[j+i+28] == PhasingSign_SB_2[j]);          
-                temp_SB_2 +=  (demodulated[j+i+34] == PhasingSign_SB_1[j]);          
+                temp_SB_2 +=  (demodulated[j+i+35] == PhasingSign_SB_1[j]);          
             }     
             if (temp_SB_2 == 7*6)
             {

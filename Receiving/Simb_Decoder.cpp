@@ -1,10 +1,14 @@
  #include "Simb_Decoder.h"
  
-std::string Compare(std::string DX, std::string RX){
+std::string Receiver::Compare(std::string DX, std::string RX){
+
     std::string final;
+
     int len =  RX.size();
+
     if (DX.size() != RX.size())
     {
+        Log("Different sizes\n");
         if (DX.size() > RX.size())
         {
             len =RX.size();
@@ -13,11 +17,14 @@ std::string Compare(std::string DX, std::string RX){
             len =DX.size();
         }
         
-
-        
-        
     }
-    std::cout << "len = " << len;
+    else{
+
+    }
+    
+
+
+
     for (int i = 0; i < len; i++)
     {
         if (DX[i] == RX[i])
@@ -29,30 +36,32 @@ std::string Compare(std::string DX, std::string RX){
             final += '*';
         }
         
-        
     }
     return final;
 }
 
- std::string Text_Decoder(const std::vector<int> DX , const std::vector<int> RX){
+ std::string Receiver::Text_Decoder(const std::vector<int> DX , const std::vector<int> RX){
 
     std::string Text_RX;
     std::string Print_text_RX;
     std::string Text_DX;
     std::string Print_text_DX;
+
     int len = RX.size();
+
+
     int last_simb = -1;
     if (RX.size() != DX.size())
     {
-        std::cout  << "Sizes not compatative" << std::endl;
+        Log("Sizes not compatative\n");
     }
 
     else{
         for (int i = 0; i < len; i++)
         {
             int sum = RX[i];
-            std::string arr;
-            std::string Print;
+            std::string arr = "";
+            std::string Print = "";
             if (last_simb == 1 && sum != 73)
 
                 switch (sum)
@@ -289,8 +298,8 @@ std::string Compare(std::string DX, std::string RX){
                         break;
         
                     case 100:
-                        arr = arr + char(13);
-                        Print = Print + char(13);// new line  check 
+                        arr =  char(13);
+                        Print =  char(13);// new line  check 
                         break;
         
         
@@ -302,8 +311,8 @@ std::string Compare(std::string DX, std::string RX){
                         arr = '}';     //PhasingSign_2
                         break;
                     default:
-                        arr = ' ';
-                        Print = ' ';
+                        arr = '*';
+                        Print = '*';
                         break;
                 }
             else
@@ -347,9 +356,9 @@ std::string Compare(std::string DX, std::string RX){
         }
         for (int i = 0; i < len; i++)
         {
-            int sum = RX[i];
-            std::string arr;
-            std::string Print;
+            int sum = DX[i];
+            std::string arr = "";
+            std::string Print = "";
             if (last_simb == 1 && sum != 73)
 
                 switch (sum)
@@ -633,11 +642,12 @@ std::string Compare(std::string DX, std::string RX){
                         arr = '}';     //PhasingSign_2
                         break;
                     default:
-                        arr = ' ';
-                        Print = ' ';
+                        arr = '*';
+                        Print = '*';
                         break;
                 }
             } 
+
             Text_DX += arr;
             Print_text_DX += Print;
 
@@ -648,7 +658,7 @@ std::string Compare(std::string DX, std::string RX){
     return Compare(Print_text_DX,Print_text_RX);
  }
 
-std::tuple<std::vector<int>,std::vector<int>> Simb_Decoder(const std::vector<bool> demodulated){
+std::tuple<std::vector<int>,std::vector<int>> Receiver::Simb_Decoder(const std::vector<bool> demodulated){
 
 
     std::string readen_text  ;
@@ -688,4 +698,36 @@ std::tuple<std::vector<int>,std::vector<int>> Simb_Decoder(const std::vector<boo
     //  -1 => none
 
     return std::tie(simb_arr_DX,simb_arr_RX);
+}
+
+bool Receiver::AlphaCheck(const std::vector<bool> demodulated){
+    
+    int len_of_demodulated = demodulated.size();
+    int num_of_simb = len_of_demodulated/7;
+
+    std::vector<int> simb_arr ;
+
+    for (int i = 0; i < num_of_simb; i++)
+    {
+        int temp_simb = 0;
+
+        for (int j = 6; j >=0; j--)
+        {
+            temp_simb += pow(2,6-j)*demodulated[i*7+j];
+        }
+        
+        simb_arr.push_back(temp_simb);
+    }
+    for (size_t i = 0; i < simb_arr.size(); i++)
+    {
+        if (simb_arr[i] == 7)
+        {
+            
+        }
+        else
+        {
+            return false;
+        }
+    }
+    return true;
 }

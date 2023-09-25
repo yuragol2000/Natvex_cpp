@@ -6,8 +6,7 @@
 #include <tuple>
 #include <cmath>
 
+#include "Receiver.h"
+
 const std::vector<bool> Sign27 = {1,1,1,0,0,0,0}; //Carriage return
 const std::vector<bool> Sign28 = {1,1,0,0,1,0,0}; // /n
-
-std::tuple<std::vector<int>,std::vector<int>> Simb_Decoder(const std::vector<bool> demodulated);
-std::string Text_Decoder(const std::vector<int> ,const std::vector<int> );
