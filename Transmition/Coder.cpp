@@ -1,13 +1,17 @@
-/**
- *  \brief Function of coding using the International Telegraph Alphabet No. 2 and adding phasing signals
- *  \param[in] input_text, 
- *  \param[in] type_of_coder, \\ if 0 -> CBRS if 1 -> SBRS
- *  \param[out] binarycode  
- * 
-*/
+
 
 #include "Coder.h"
 
+/**
+ *  \brief Function of coding using the International Telegraph Alphabet No. 2 and adding phasing signals
+ * 
+ *  \param[in] input_text
+ *  \param[in] type_of_coder 0 -> CBRS, 1 -> SBRS
+ *  \param[out] binarycode  
+ * 
+ *   
+ * 
+*/
 
 std::vector<bool> Transmitter::Coder(const char* input_text,const bool & type_of_coder){
 
@@ -36,7 +40,6 @@ std::vector<bool> Transmitter::Coder(const char* input_text,const bool & type_of
 
     if (Reading.start_reading == true)// new massage with new line
     {
-        std::cout << "hire" << std::endl;
         messageDX.insert(messageDX.end(), Sign27.begin(), Sign27.end()) ;
         messageDX.insert(messageDX.end(), Sign28.begin(), Sign28.end()) ;
         Reading.start_reading = false;

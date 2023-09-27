@@ -5,6 +5,8 @@
 #include <cmath>
 #include <iostream>
 
+#include "Transmitter.h"
+
 const double Smoothing_part = 0.5;
 
 const int Fd = 100;                           // Character speed
@@ -15,5 +17,3 @@ const int dFp = 170;
 
 
 const double PI = 3.1415926535897;
-
-std::vector<double> Modulation(const std::vector<bool> &);

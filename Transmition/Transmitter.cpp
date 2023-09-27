@@ -1,6 +1,15 @@
 #include "Transmitter.h"
 
-
+/**
+ *  \brief Function of coding using the International Telegraph Alphabet No. 2 and adding phasing signals
+ * 
+ *  \param[in] input_text
+ *  \param[in] type_of_coder 0 -> CBRS, 1 -> SBRS
+ *  \param[out] binarycode  
+ * 
+ *   
+ * 
+*/
 Transmitter::Transmitter(){
 
     LoadConf(Settings.CONFIG_FILE);    
@@ -8,8 +17,6 @@ Transmitter::Transmitter(){
  
 
     Reading.text_buffer_1 = new char[Settings.LEN_OF_READING_BUFFER]();
-    Reading.text_buffer_2 = new char[Settings.LEN_OF_READING_BUFFER]();
-    Reading.text_buffer_3 = new char[Settings.LEN_OF_READING_BUFFER]();
 
     Log("filename_in - " + Settings.IMPUT_TEXT_FILE + "\n");
     Log("filename_out - " + Settings.OUTPUT_TEXT_FILE + "\n");
@@ -18,12 +25,34 @@ Transmitter::Transmitter(){
     Alpha_init();
 }
 
+/**
+ *  \brief Function of coding using the International Telegraph Alphabet No. 2 and adding phasing signals
+ * 
+ *  \param[in] input_text
+ *  \param[in] type_of_coder 0 -> CBRS, 1 -> SBRS
+ *  \param[out] binarycode  
+ * 
+ *   
+ * 
+*/
+
 Transmitter::Transmitter(const std::string configure_file)
 {
     Settings.CONFIG_FILE = configure_file;
     std::cout << "Config file has changed to - " << configure_file << std::endl; 
     Transmitter();
 }
+
+/**
+ *  \brief Function of coding using the International Telegraph Alphabet No. 2 and adding phasing signals
+ * 
+ *  \param[in] input_text
+ *  \param[in] type_of_coder 0 -> CBRS, 1 -> SBRS
+ *  \param[out] binarycode  
+ * 
+ *   
+ * 
+*/
 
 int Transmitter::LoadConf(const std::string){
     
@@ -54,7 +83,16 @@ int Transmitter::LoadConf(const std::string){
         return 0;
     }    
 }
-
+/**
+ *  \brief Function of coding using the International Telegraph Alphabet No. 2 and adding phasing signals
+ * 
+ *  \param[in] input_text
+ *  \param[in] type_of_coder 0 -> CBRS, 1 -> SBRS
+ *  \param[out] binarycode  
+ * 
+ *   
+ * 
+*/
 void Transmitter::Log(const std::string message){
 
     std::ofstream log;
@@ -62,19 +100,34 @@ void Transmitter::Log(const std::string message){
             log.write(message.c_str(),message.length());
     log.close();
 }
-
+/**
+ *  \brief Function of coding using the International Telegraph Alphabet No. 2 and adding phasing signals
+ * 
+ *  \param[in] input_text
+ *  \param[in] type_of_coder 0 -> CBRS, 1 -> SBRS
+ *  \param[out] binarycode  
+ * 
+ *   
+ * 
+*/
 Transmitter::~Transmitter()
 {
 
-    
     delete  Reading.text_buffer_1;
-    delete  Reading.text_buffer_2;
-    delete  Reading.text_buffer_3;
 
     Log("CLASS Destracted\n");
 }
 
-
+/**
+ *  \brief Function of coding using the International Telegraph Alphabet No. 2 and adding phasing signals
+ * 
+ *  \param[in] input_text
+ *  \param[in] type_of_coder 0 -> CBRS, 1 -> SBRS
+ *  \param[out] binarycode  
+ * 
+ *   
+ * 
+*/
 void Transmitter::_Coder(){
     
     Log("Coder \n");
@@ -88,7 +141,16 @@ void Transmitter::_Coder(){
     Log("Coding.codered_buffer_1 size = " + std::to_string(Coding.codered_buffer_1.size()) + '\n');
 
 }
-
+/**
+ *  \brief Function of coding using the International Telegraph Alphabet No. 2 and adding phasing signals
+ * 
+ *  \param[in] input_text
+ *  \param[in] type_of_coder 0 -> CBRS, 1 -> SBRS
+ *  \param[out] binarycode  
+ * 
+ *   
+ * 
+*/
 int Transmitter::Alpha_init(){
     Log("ALPHA init \n");
     Modulating.modulated_buffer_alpha = Modulation(Coding.codered_buffer_alpha);
@@ -97,13 +159,31 @@ int Transmitter::Alpha_init(){
 }
 
 
-
+/**
+ *  \brief Function of coding using the International Telegraph Alphabet No. 2 and adding phasing signals
+ * 
+ *  \param[in] input_text
+ *  \param[in] type_of_coder 0 -> CBRS, 1 -> SBRS
+ *  \param[out] binarycode  
+ * 
+ *   
+ * 
+*/
 int Transmitter::Alpha(){
     Log("ALPHA \n");
     Writing(Modulating.modulated_buffer_alpha);
 
 }
-
+/**
+ *  \brief Function of coding using the International Telegraph Alphabet No. 2 and adding phasing signals
+ * 
+ *  \param[in] input_text
+ *  \param[in] type_of_coder 0 -> CBRS, 1 -> SBRS
+ *  \param[out] binarycode  
+ * 
+ *   
+ * 
+*/
 int Transmitter::Trans(){
     Log("\n");
     int read_ = Read_from_file(Settings.IMPUT_TEXT_FILE);
@@ -125,6 +205,16 @@ int Transmitter::Trans(){
     Modulator();
     return 0;
 }
+/**
+ *  \brief Function of coding using the International Telegraph Alphabet No. 2 and adding phasing signals
+ * 
+ *  \param[in] input_text
+ *  \param[in] type_of_coder 0 -> CBRS, 1 -> SBRS
+ *  \param[out] binarycode  
+ * 
+ *   
+ * 
+*/
 void Transmitter::Modulator(){
     Log("Modulator \n");
     Modulating.modulated_buffer_1 = Modulation(Coding.codered_buffer_1);

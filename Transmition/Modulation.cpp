@@ -6,8 +6,7 @@
 */
 #include "Modulation.h"
 
-
-std::vector<double> Modulation(const std::vector<bool> &binarycode){
+std::vector<double> Transmitter::Modulation(const std::vector<bool> &binarycode){
 
     double f[2] = {Fp - dFp, Fp + dFp};                   // Manipulation frequencies
    
