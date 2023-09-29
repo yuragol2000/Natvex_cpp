@@ -1,7 +1,14 @@
 #include "Decoder.h"
 
 
-
+/**
+ *  \brief  Decoding function of the received demodulated signal
+ * 
+ *  \param[in] demodulated  Demodulated binary signal
+ * 
+ *  \return  Returns the decoded signal
+ *
+*/
 std::string Receiver::Decoder(std::vector<bool> demodulated){
 
     std::string decodered;

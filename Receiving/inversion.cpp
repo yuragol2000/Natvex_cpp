@@ -1,4 +1,12 @@
-
+/**
+ *  \brief Matrix inverse
+ * 
+ *  \param[in] A Input matrix, 
+ *  
+ * 
+ *  \return  computes the inverse of square matrix.
+ *
+*/
 
 double** inversion(double A[10][10], int N)
 {

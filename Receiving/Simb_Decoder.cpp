@@ -1,8 +1,18 @@
  #include "Simb_Decoder.h"
- 
+ /**
+ *  \brief  DX and RX channel comparison function
+ * 
+ *  \param[in] DX  The string of the decodered signal on the DX channel
+ *  \param[in] RX  The string of the decodered signal on the RX channel
+ * 
+ *  \return Print_text  
+ * 
+ * If the characters from the two channels do not match, it returns "*" in this place
+ * 
+*/
 std::string Receiver::Compare(std::string DX, std::string RX){
 
-    std::string final;
+    std::string Print_text;
 
     int len =  RX.size();
 
@@ -21,25 +31,31 @@ std::string Receiver::Compare(std::string DX, std::string RX){
     else{
 
     }
-    
-
-
 
     for (int i = 0; i < len; i++)
     {
         if (DX[i] == RX[i])
         {
-            final += DX[i];
+            Print_text += DX[i];
         }
         else 
         {
-            final += '*';
+            Print_text += '*';
         }
         
     }
-    return final;
+    return Print_text;
 }
-
+/**
+ *  \brief  Message decoding function
+ * 
+ *  \param[in] DX  The string of the received signal on the DX channel
+ *  \param[in] RX   The string of the received signal on the RX channel
+ * 
+ *  \return Print_text  
+ * 
+ *  Using the International Telegraph Alphabet No. 2 
+*/
  std::string Receiver::Text_Decoder(const std::vector<int> DX , const std::vector<int> RX){
 
     std::string Text_RX;
@@ -658,6 +674,17 @@ std::string Receiver::Compare(std::string DX, std::string RX){
     return Compare(Print_text_DX,Print_text_RX);
  }
 
+/**
+ *  \brief  The function of dividing the received signal into two streams DX and RX
+ * 
+ *  \param[in] demodulated  Demodulated binary signal
+ * 
+ *  \return simb_arr_DX 
+ *  \return simb_arr_RX  
+ * 
+ *  Return two streams converted to decimal code.
+*/
+
 std::tuple<std::vector<int>,std::vector<int>> Receiver::Simb_Decoder(const std::vector<bool> demodulated){
 
 
@@ -699,6 +726,14 @@ std::tuple<std::vector<int>,std::vector<int>> Receiver::Simb_Decoder(const std::
 
     return std::tie(simb_arr_DX,simb_arr_RX);
 }
+/**
+ *  \brief  The function of checking the received signal for compliance with the idle alpha signal
+ * 
+ *  \param[in] demodulated  Demodulated binary signal
+ * 
+ *  \return If the received signal is an alpha signal 1 otherwise 0  
+ *
+*/
 
 bool Receiver::AlphaCheck(const std::vector<bool> demodulated){
     

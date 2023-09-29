@@ -37,17 +37,7 @@ void receiver(){
     Receiver rc;
 
     std::thread t1 (Reader_thread,std::ref(rc));
-    //std::thread t2 (Coder_thread,std::ref(tr));
 
-    
-    
-    //std::thread t2 (Modulation_thread,std::ref(tr));
-   // std::thread t1 (Modulation_thread,std::ref(tr));
-
-    //Read(std::ref(tr));
-    // std::thread t2 (foo,tr);
-    
-    //t2.join();
     std::string command;
     while (true)
     {
@@ -56,14 +46,26 @@ void receiver(){
 
         if (command == "stop")
         {
-           // t2.detach();
-            //t3.detach();rc.Settings.IMPUT_TEXT_FILE
+            t1.detach();
+            rc.~Receiver();
             break;
         }
-        else if (command == "stop_1")
+        else if (command == "restart")
         {
-            //t1.detach();
-        }
+            t1.detach();
+            rc.~Receiver();
+
+            Receiver tr;
+            std::thread t1 (Reader_thread,std::ref(rc));
+           
+        } 
+        else if (command == "conf")
+        {
+            std::string conf_file_name;
+            std::cin >> conf_file_name;
+
+            rc.LoadConf(conf_file_name);
+        } 
         else if (command == "read")
         {
             rc.Read_from_file();
@@ -76,12 +78,10 @@ void receiver(){
         {
             rc.Demodulator();
         }
-
         else
         {
             std::cout  << "UNNOWN COMMAND " << command << std::endl;
         } 
-        usleep(500000);
     }
 
 }

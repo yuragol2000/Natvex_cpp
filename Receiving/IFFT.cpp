@@ -1,5 +1,13 @@
 #include "IFFT.h"
-
+/**
+ *  \brief Inverse fast Fourier transform
+ * 
+ *  \param[in] xr Input array, specified as a vector, a matrix, or a multidimensional array. If Y is of type single, then ifft natively computes in single precision, and X is also of type single. Otherwise, X is returned as type double.
+ *  \param[in] n Inverse transform length, specified as [] or a nonnegative integer scalar. Padding Y with zeros by specifying a transform length larger than the length of Y can improve the performance of ifft. The length is typically specified as a power of 2 or a product of small prime numbers. If n is less than the length of the signal, then ifft ignores the remaining signal values past the nth entry and returns the truncated result. If n is 0, then ifft returns an empty matrix.
+ * 
+ *  \return returns the n-point inverse Fourier transform of Y by padding Y with trailing zeros to length n.
+ * 
+*/
 std::vector<std::complex<double>> IFFT(std::vector<std::complex<double>>  xr,const int n){
     
     int N = n;

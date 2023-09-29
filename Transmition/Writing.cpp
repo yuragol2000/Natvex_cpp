@@ -3,12 +3,11 @@
 /**
  *  \brief Function of writing modulated signal to output file, changing double to short 
  * 
- *  \param[in] s_fsk
+ *  \param[in] s_fsk Frequency-manipulated signal
  * 
- *  \param[in] type_of_coder 0 -> CBRS, 1 -> SBRS
- *  \param[out] binarycode  
+ *  \param[out] Errors
  * 
- *   
+ *  
  * 
 */
 int Transmitter::Writing(std::vector<double> s_fsk){

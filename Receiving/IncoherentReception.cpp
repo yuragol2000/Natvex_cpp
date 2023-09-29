@@ -1,9 +1,17 @@
 #include "IncoherentReception.h"
 
-
+/**
+ *  \brief Received signal demodulation function
+ * 
+ *  \param[in] modulated Received modulated signal
+ * 
+ *  \return demodulated signal
+ * 
+*/
 std::vector<bool> Receiver::IncoherentReception(const std::vector<short> modulated){
 
     std::vector<double> binarycode_double;
+    
     double temp = 0;
     
     for (size_t i = 0; i < modulated.size(); i++)
@@ -12,7 +20,7 @@ std::vector<bool> Receiver::IncoherentReception(const std::vector<short> modulat
         binarycode_double.push_back(temp/32767);
     }
 
-    std::vector<double> filtered_high = Filtfilt(bh,ah,binarycode_double);
+    std::vector<double> filtered_high  = Filtfilt(bh,ah,binarycode_double);
     std::vector<double> filtered_low   = Filtfilt(bl,al,binarycode_double);
 
     std::vector<std::complex<double>>  y_h  =  Hilbert(filtered_high);

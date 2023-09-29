@@ -1,5 +1,14 @@
 #include "Phasing.h"
-
+/**
+ *  \brief Phasing function
+ * 
+ *  \param[in] demodulated Input array, 
+ *  
+ * 
+ *  \return  offset*start_pos.
+ *  If Error return  -5
+ *
+*/
 int Receiver::Phasing(const std::vector<bool> demodulated)
 {
     int start_pos = 0;       //1 = DX  0 = RX , sign "-"  if need to invert 

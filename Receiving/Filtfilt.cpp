@@ -1,7 +1,23 @@
 #include "Filtfilt.h"
 
-
-std::vector<double> Filtfilt(const std::vector<double> b,const std::vector<double> a,const std::vector<double> x){
+/**
+ *  \brief Received signal demodulation function
+ * 
+ *  \param[in] b,a function coefficients, specified as vectors. If you use an all-pole filter, enter 1 for b. If you use an all-zero (FIR) filter, enter 1 for a.
+ *  \param[in] x Input signal, specified as a real-valued or complex-valued vector, matrix, or N-D array. x must be finite-valued. The length of x must be greater than three times the filter order, defined as max(length(B)-1, length(A)-1). The function operates along the first array dimension of x unless x is a row vector. If x is a row vector, then the function operates along the second dimension.
+ * 
+ *  \return demodulated signal
+ * Performs zero-phase digital filtering by processing 
+ * the input data x in both the forward and reverse 
+ * directions. After filtering the data in the forward 
+ * direction, the function matches initial conditions 
+ * to minimize startup and ending transients, reverses 
+ * the filtered sequence, and runs the reversed sequence 
+ * back through the filter. 
+ * 
+ * 
+*/
+std::vector<double> Filtfilt(const std::vector<double> b, const std::vector<double> a, const std::vector<double> x){
 
     int Npts = x.size();
     int na = a.size();

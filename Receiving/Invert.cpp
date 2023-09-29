@@ -1,5 +1,13 @@
 #include <vector>
-
+/**
+ *  \brief Invert binary array
+ * 
+ *  \param[in] demodulated Input array, 
+ *  
+ * 
+ *  \return  Invert binary array.
+ *
+*/
 std::vector<bool> Invert(const std::vector<bool> demodulated){
 
     std::vector<bool> demodulated_invert;

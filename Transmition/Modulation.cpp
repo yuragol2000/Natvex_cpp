@@ -1,7 +1,9 @@
 /**
  *  \brief Frequency manipulation function
- *  \param[in] binarycode 
- *  \param[out] s_fsk 
+ * 
+ *  \param[in] binarycode Binary codered signal
+ * 
+ *  \return s_fsk Frequency manipulated signal
  * 
 */
 #include "Modulation.h"

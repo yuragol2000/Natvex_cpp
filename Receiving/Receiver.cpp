@@ -1,5 +1,12 @@
 #include "Receiver.h"
 
+/**
+ *  \brief Default Constructor
+ * 
+ * Loads the default configuration (latest) and also allocates memory for an array of text.
+ *   
+ * 
+*/
 Receiver::Receiver(){
 
     LoadConf(Settings.CONFIG_FILE);    
@@ -10,6 +17,14 @@ Receiver::Receiver(){
     Log("filename_out - " + Settings.OUTPUT_TEXT_FILE + "\n");
 }
 
+/**
+ *  \brief A constructor using a specific configuration file
+ * 
+ *  \param[in] configure_file
+ * 
+ *  After changing the configuration file, it runs  default Constructor
+ * 
+*/
 Receiver::Receiver(const std::string configure_file)
 {
     Settings.CONFIG_FILE = configure_file;
@@ -17,9 +32,33 @@ Receiver::Receiver(const std::string configure_file)
     Receiver();
 }
 
-int Receiver::LoadConf(const std::string){
+/**
+ *  \brief Default destructor   
+ * 
+ *  Destroys the buffer for text
+*/
+
+Receiver::~Receiver()
+{
+
+    Log("CLASS Destracted\n");
+}
+/**
+ *  \brief Method of loading the configuration file
+ * 
+ *  \param[in] conf_file_name
+ *  
+ *  \return Errors
+ * 
+ *  \warning When adding new variables, you need to change this method
+ * 
+ *  Reads the necessary constants and variables and puts them in the transmitter class
+*/
+
+int Receiver::LoadConf(const std::string conf_file_name){
     
-    
+    Settings.CONFIG_FILE = conf_file_name;
+
     INIReader reader(Settings.CONFIG_FILE);
 
     Settings.IMPUT_TEXT_FILE = reader.GetString("IMPUT_PARAMETERS","IMPUT_TEXT_FILE","txt");
@@ -47,7 +86,18 @@ int Receiver::LoadConf(const std::string){
     }    
 }
 
-void Receiver::Log(const std::string message){
+/**
+ *  \brief Logging method
+ * 
+ *  \param[in] message Message to be placed in the log file
+ * 
+ *  \return Errors
+ * 
+ *  The location of the log file is stored in Settings.LOG_FILE
+ * 
+*/
+
+int Receiver::Log(const std::string message){
 
     std::ofstream log;
     log.open(Settings.LOG_FILE,std::ios_base::app);
@@ -55,76 +105,47 @@ void Receiver::Log(const std::string message){
     log.close();
 }
 
-Receiver::~Receiver()
-{
+/**
+ *  \brief Decoding method with logging
+ * 
+ *  \return Errors
+ * 
+ *  Writes the size of the decoded buffer to a log file
+ * 
+*/
 
-    Log("CLASS Destracted\n");
-}
-
-
-
-int Receiver::Read_from_file(){
-    
-    Log("Reading \n");
-
-    std::ifstream in;
-
-    in.open(Settings.IMPUT_TEXT_FILE); 
-
-    if (in.is_open())
-    {
-
-        in.seekg(Modulation.reading_position);
-
-        if (in.peek() != std::ifstream::traits_type::eof())
-        {
-            short temp;
-            while (in >> temp)
-            {
-                Modulation.modulated_buf.push_back(temp);
-            }
-            Modulation.reading_position = Modulation.reading_position + in.gcount(); 
-            Log("Reading pos = " + std::to_string(Modulation.reading_position) + '\n');
-            in.close(); 
-            Log("Modulation.modulated_buf size = " + std::to_string(Modulation.modulated_buf.size()) + '\n');
-
-            std::fstream clear_file(Settings.IMPUT_TEXT_FILE, std::ios::out);
-            clear_file.close();
-
-            return 0;
-        }
-        else
-        {
-            Log("End of file \n");
-            in.close(); 
-            return 1;
-        }
-
-       
-    }
-
-    else
-    {
-
-      Log("Not opened " + Settings.IMPUT_TEXT_FILE + '\n');
-
-    }
-
-}
-void Receiver::_Decoder(){
+int Receiver::_Decoder(){
     
     Log("Decoder \n");
     Receiving.received_text = Decoder(Demodulation.demodulated_buf);
     Log("Receiving.received_text size = " + std::to_string(Receiving.received_text.size()) + '\n');
-    Write_text_to_file(Settings.OUTPUT_TEXT_FILE,Receiving.received_text);
+    
 }
 
-void Receiver::Demodulator(){
+/**
+ *  \brief Demodulating method with logging
+ *  
+ *  \return Errors
+ * 
+ *  Writes the size of the demodulated buffer to a log file
+ * 
+*/
+
+int Receiver::Demodulator(){
     Log("Demodulator \n");
     Demodulation.demodulated_buf = IncoherentReception(Modulation.modulated_buf);
     Modulation.modulated_buf.clear();
     Log("Demodulation.demodulated_buf size = " + std::to_string(Demodulation.demodulated_buf.size()) + '\n');
 }
+/**
+ *  \brief The main method of Receiver
+ * 
+ *  \return Errors  
+ * 
+ *   Starts the method of reading modulated file, then demodulates
+     and decoder it. Then sends it to the output file
+ * 
+*/
 int Receiver::Rec(){
 
     Log("Rec \n");
@@ -134,16 +155,24 @@ int Receiver::Rec(){
         return 1;
     }
     
-    
     Demodulator();
     _Decoder();
-
+    Write_text_to_file(Settings.OUTPUT_TEXT_FILE,Receiving.received_text);
 }
 
-int Receiver::Write_text_to_file(const std::string FileName ,const std::string Messege){
+/**
+ *  \brief  The function of recording the received signal to a file
+ * 
+ *  \param[in] Output_filename  Name of the output file
+ *  \param[in] Messege Message to be placed in the Output_filename
+ * 
+ *  \return Errors  
+ * 
+*/
+int Receiver::Write_text_to_file(const std::string Output_filename ,const std::string Messege){
 
     std::ofstream out;   
-    out.open(FileName,std::ios::app);  
+    out.open(Output_filename,std::ios::app);  
     if (out.is_open())
     {
 

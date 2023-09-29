@@ -9,14 +9,14 @@
 
 bool _var  = false;//индикатор передачи false - нет true - есть 
 
-void Coder_thread(Transmitter& _obj)
+void Coder_thread(Transmitter& _obj,std::string input_file_name)
 {
     
     _var = true;
     while (true)
     {
 
-        if (_obj.Trans() != 0)
+        if (_obj.Trans(input_file_name) != 0)
         {
             _var = false;
             break;
@@ -30,7 +30,6 @@ void Coder_thread(Transmitter& _obj)
 
 void Modulation_thread(Transmitter& _obj){
     
-    _obj.Log("Modulating " + _obj.Settings.OUTPUT_TEXT_FILE + '\n');
     while (true)
     {
 
@@ -47,23 +46,8 @@ void Modulation_thread(Transmitter& _obj){
     }
     
 }
-void Transmitter::Write_text(){
-    std::cout << Reading.text_buffer_1 << std::endl;
-}
-void Transmitter::Write_bin(){
-    std::cout  << "Bin Size = " << Coding.codered_buffer_1.size() << std::endl;
-    for (int i = 0; i < Coding.codered_buffer_1.size(); i++)
-    {
-        if (i%7 == 0)
-        {
-            std::cout << std::endl;
-        }
-        
-        std::cout << Coding.codered_buffer_1[i] << " " ;
-    }
-    
-    
-}
+
+
 void Transmition(){
     
     Transmitter tr;
@@ -81,15 +65,26 @@ void Transmition(){
         if (command == "stop")
         {
             t1.detach();
+            tr.~Transmitter();
             break;
         }
-        else if (command == "stop_1")
+        else if (command == "restart")
         {
             t1.detach();
-        }
+            tr.~Transmitter();
+
+            Transmitter tr;
+            std::thread t1 (Modulation_thread,std::ref(tr));
+           
+        }        
         else if (command == "read")
         {
-            tr.Read_from_file(tr.Settings.IMPUT_TEXT_FILE);
+            std::string file_name;
+            std::cin >> file_name;
+
+            tr._Reader(file_name);
+
+            
         }
         else if (command == "coder")
         {
@@ -101,22 +96,28 @@ void Transmition(){
         }
         else if (command == "tr")
         {
-            std::thread t2 (Coder_thread,std::ref(tr));
+            std::string file_name;
+            std::cin >> file_name;
+
+            std::thread t2 (Coder_thread,std::ref(tr),file_name);
             t2.join();
+
         }
-        else if (command == "a")
+        else if (command == "conf")
         {
-            tr.Alpha();
+            std::string conf_file_name;
+            std::cin >> conf_file_name;
+
+            tr.LoadConf(conf_file_name);
         }
         else if (command == "mod")
         {
-            tr.Modulator();
+            tr._Modulator();
         }
         else
         {
             std::cout  << "UNNOWN COMMAND " << command << std::endl;
         } 
-        usleep(500000);
     }
 }
 

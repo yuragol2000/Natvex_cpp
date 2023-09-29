@@ -10,8 +10,8 @@
 int Transmitter::Read_from_file(std::string FileName){
     
     std::fstream in;
-    in.open(Settings.IMPUT_TEXT_FILE,std::ios::in);
-    Log("Read\n");
+    in.open(FileName,std::ios::in);
+    Log("Read" +  FileName +"\n");
 
     if (in.is_open())
     {
@@ -23,7 +23,7 @@ int Transmitter::Read_from_file(std::string FileName){
             
             in.seekg(Reading.reading_position);
 
-            Log("Reading position = " + std::to_string(Reading.reading_position) + '\n' );
+           
             in.read(Reading.text_buffer_1,Settings.LEN_OF_READING_BUFFER);
             Reading.num_to_print = in.gcount();
             Reading.reading_position = Reading.reading_position + in.gcount(); 
@@ -31,7 +31,7 @@ int Transmitter::Read_from_file(std::string FileName){
         } 
         else{
             Log("End of file\n");
-            return 2;
+            return 3;
         }
     }
     else

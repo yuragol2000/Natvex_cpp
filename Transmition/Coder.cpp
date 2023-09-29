@@ -6,10 +6,10 @@
  *  \brief Function of coding using the International Telegraph Alphabet No. 2 and adding phasing signals
  * 
  *  \param[in] input_text
- *  \param[in] type_of_coder 0 -> CBRS, 1 -> SBRS
+ *  \param[in] type_of_coder 
  *  \param[out] binarycode  
  * 
- *   
+ *   if type_of_coder 0 -> CBRS, 1 -> SBRS
  * 
 */
 

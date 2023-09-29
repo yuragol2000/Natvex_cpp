@@ -18,27 +18,59 @@
  *
  * - \subpage ReceiverPage "How to use Receiver?"
  *
- */ 
+*/ 
+
 
 /*! \page TransmitterPage How to use Transmitter?
  *
- * Lorem ipsum dolor sit amet
+ *  * To start the transfer, you need to configure the config file or use the available.
+ * 
+ *  * Next, you need to inform the new config file if it has been changed. To do this, write "conf" in the console and enter the path to the new config file.
+ * 
+ *  * Before sending, you need to add a file with a message. To transfer the necessary file, write to the console "tr" and the path to the desired file.
+ * 
+ *  * To restart the transmitter, you need to write "restart" to the console.
+ * 
+ *  * To stop the transmitter, you need to write "stop" to the console.
+ * 
  *
- */
+*/
 
 /*! \page ReceiverPage How to use Receiver?
  *
- * This page is about how to draw a circle.
- * Following sections describe circle:
- * - \ref groupCircleDefinition "Definition of Circle"
- * - \ref groupCircleClass "Circle Class"
- */
+ *  * To start the reciving, you need to configure the config file or use the available.
+ * 
+ *  * Next, you need to inform the new config file if it has been changed. To do this, write "conf" in the console and enter the path to the new config file.
+ * 
+ *  * To restart the receiver, you need to write "restart" to the console.
+ * 
+ *  * To stop the receiver, you need to write "stop" to the console.
+*/
 
 
-
+/**
+ *  \brief The Transmitter class is used for careful use of its features
+ *  \date 09.2023
+ * 
+*/
 class Transmitter
 {
 public:
+    Transmitter(const std::string);
+    Transmitter();
+    ~Transmitter();
+
+    int Trans();
+    int Trans(std::string);
+    
+    int LoadConf(const std::string);
+    int Write_text();
+    int Writing(std::vector<double>);
+    int _Modulator();
+    int Alpha();
+    int _Coder();
+    int _Reader(std::string);
+private:
     struct settings
     {
         std::string IMPUT_TEXT_FILE;
@@ -76,30 +108,26 @@ public:
         std::vector<double> modulated_buffer_alpha ;
     };
 
-    settings Settings;
+    struct errors
+    {
+        const int NO_ERROR = 0;
+        const int CANT_OPEN_FILE = 1;
+        const int FUNCTION_ERROR = 2;
+        const int EOF_ERROR = 3;
+    };
 
+    settings Settings;
+    errors Errors;
     reading Reading;
     coding Coding;
     modulating Modulating;
 
-    int Z = 0  ;
-
-    int Writing(std::vector<double>);
-
-    int LoadConf(const std::string);
-    Transmitter(const std::string);
-    std::vector<bool> Coder(const char* ,const bool & );
-    void Reader();
-    void _Coder();
-    void Modulator();
     std::vector<double> Modulation(const std::vector<bool> &);
-    void Log(const std::string);
-    int Trans();
-    int Alpha_init();
-    int Alpha();
-    void Write_text();
-    void Write_bin();
+    std::vector<bool> Coder(const char* ,const bool & );
     int Read_from_file(std::string);
-    Transmitter();
-    ~Transmitter();
+    int Log(const std::string);
+    int Alpha_init();
+    
+    
 };
+//TEST/text.txt
